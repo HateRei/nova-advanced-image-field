@@ -2,9 +2,9 @@
 
 <p align="center">
   <a href="https://github.styleci.io/repos/156091175?branch=2.x"><img src="https://github.styleci.io/repos/156091175/shield?branch=2.x" alt="StyleCI"></a>
-  <a href="https://packagist.org/packages/ctessier/nova-advanced-image-field"><img src="https://img.shields.io/packagist/v/ctessier/nova-advanced-image-field.svg?style=flat-square" alt="Latest Version on Packagist" /></a>
-  <a href="https://packagist.org/packages/ctessier/nova-advanced-image-field"><img src="https://img.shields.io/packagist/dm/ctessier/nova-advanced-image-field.svg?style=flat-square" alt="Total Downloads" /></a>
-  <a href="https://packagist.org/packages/ctessier/nova-advanced-image-field"><img src="https://img.shields.io/github/license/ctessier/nova-advanced-image-field?color=%23B2878B&style=flat-square" alt="License" /></a>
+  <a href="https://packagist.org/packages/ohka7/nova-advanced-image-field"><img src="https://img.shields.io/packagist/v/ohka7/nova-advanced-image-field.svg?style=flat-square" alt="Latest Version on Packagist" /></a>
+  <a href="https://packagist.org/packages/ohka7/nova-advanced-image-field"><img src="https://img.shields.io/packagist/dm/ohka7/nova-advanced-image-field.svg?style=flat-square" alt="Total Downloads" /></a>
+  <a href="https://packagist.org/packages/ohka7/nova-advanced-image-field"><img src="https://img.shields.io/github/license/ohka7/nova-advanced-image-field?color=%23B2878B&style=flat-square" alt="License" /></a>
 </p>
 
 <p align="center"><i>An advanced image field for Nova allowing you to upload, crop and resize images</i></p>
@@ -47,7 +47,7 @@ See [Intervention requirements](https://image.intervention.io/v2/introduction/in
 Install the package into a Laravel application with Nova using Composer:
 
 ```bash
-composer require ctessier/nova-advanced-image-field
+composer require ohka7/nova-advanced-image-field
 ```
 
 If you want to use Imagick as the default image processing library, follow the [Intervention documentation for Laravel](https://image.intervention.io/v2/introduction/installation#laravel).

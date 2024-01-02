@@ -6,4 +6,4 @@ mix
   .setPublicPath('dist')
   .js('resources/js/field.js', 'js')
   .vue({ version: 3 })
-  .nova('ctessier/nova-advanced-image-field')
+  .nova('ohka7/nova-advanced-image-field')

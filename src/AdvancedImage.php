@@ -1,6 +1,6 @@
 <?php
 
-namespace Ctessier\NovaAdvancedImageField;
+namespace Ohka7\NovaAdvancedImageField;
 
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Fields\Image;

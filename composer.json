@@ -1,5 +1,5 @@
 {
-    "name": "ctessier/nova-advanced-image-field",
+    "name": "ohka7/nova-advanced-image-field",
     "description": "An advanced image field for Nova with cropping and resizing.",
     "keywords": [
         "laravel",
@@ -21,13 +21,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Ctessier\\NovaAdvancedImageField\\": "src/"
+            "Ohka7\\NovaAdvancedImageField\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Ctessier\\NovaAdvancedImageField\\FieldServiceProvider"
+                "Ohka7\\NovaAdvancedImageField\\FieldServiceProvider"
             ]
         }
     },
@@ -45,7 +45,7 @@
     "funding": [
         {
             "type": "github",
-            "url": "https://github.com/sponsors/ctessier"
+            "url": "https://github.com/sponsors/ohka7"
         }
     ],
     "minimum-stability": "dev",
