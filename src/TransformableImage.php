@@ -3,19 +3,18 @@
 namespace Ohka7\NovaAdvancedImageField;
 
 use Illuminate\Http\UploadedFile;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Encoders\AutoEncoder;
+use Intervention\Image\Image;
 
 trait TransformableImage
 {
     /**
      * The driver library to use for transforming the image.
      *
-     * This value will override the driver configured for Intervention
-     * in the `config/image.php` file of the Laravel project.
-     *
-     * @var string|null
+     * @var 'gd'|'imagick'
      */
-    private $driver = null;
+    private $driver = 'gd';
 
     /**
      * Indicates if the image is croppable.
@@ -69,9 +68,9 @@ trait TransformableImage
     /**
      * The Intervention Image instance.
      *
-     * @var \Intervention\Image\Image
+     * @var \Intervention\Image\ImageManager
      */
-    private $image;
+    // private $image;
 
     /**
      * Override the default driver to be used by Intervention for the image manipulation.
@@ -206,70 +205,23 @@ trait TransformableImage
             return;
         }
 
-        $this->image = Image::make($uploadedFile->getPathName());
+        $manager =
+            $this->driver === 'gd'
+            ? ImageManager::gd()
+            : ($this->driver === 'imagick'
+                ? ImageManager::imagick()
+                : '');
 
-        if ($this->autoOrientate) {
-            $this->orientateImage();
-        }
+        $image = $manager->read($uploadedFile->getPathName());
 
         if ($this->croppable && $cropperData) {
-            $this->cropImage($cropperData->coordinates);
+            $image->crop((int) $cropperData->coordinates->width, (int) $cropperData->coordinates->height, (int) $cropperData->coordinates->left, (int) $cropperData->coordinates->top);
         }
 
         if ($this->width || $this->height) {
-            $this->resizeImage();
+            $image->resize($this->width, $this->height);
         }
 
-        if ($this->outputFormat) {
-            $this->convertImage($this->outputFormat);
-        }
-
-        $this->image->save($uploadedFile->getPathName(), $this->quality, $this->outputFormat ?? $uploadedFile->getClientOriginalExtension());
-        $this->image->destroy();
-    }
-
-    /**
-     * Crop the image.
-     *
-     * @param object $cropperData
-     *
-     * @return void
-     */
-    private function cropImage(object $cropperData)
-    {
-        $this->image->crop((int) $cropperData->width, (int) $cropperData->height, (int) $cropperData->left, (int) $cropperData->top);
-    }
-
-    /**
-     * Resize the image.
-     *
-     * @return void
-     */
-    private function resizeImage()
-    {
-        $this->image->resize($this->width, $this->height, function ($constraint) {
-            $constraint->upsize();
-            $constraint->aspectRatio();
-        });
-    }
-
-    /**
-     * Orientate the image based on it's EXIF data.
-     *
-     * @return void
-     */
-    private function orientateImage()
-    {
-        $this->image->orientate();
-    }
-
-    /**
-     * Encode the image to the given format.
-     *
-     * @return void
-     */
-    private function convertImage(string $format)
-    {
-        $this->image->encode($format, $this->quality);
+        $image->encode(new AutoEncoder())->save($uploadedFile->getPathName(), $this->quality);
     }
 }
