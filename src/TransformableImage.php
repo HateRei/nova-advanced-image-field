@@ -179,9 +179,6 @@ trait TransformableImage
      */
     public function convert(string $format)
     {
-        /**
-         * @See https://image.intervention.io/v2/api/encode
-         */
         if (!in_array($format, ['jpg', 'png', 'gif', 'tif', 'bmp', 'ico', 'psd', 'webp', 'data-url'])) {
             throw new \Exception("Unsupported output format: $format");
         }
@@ -220,6 +217,29 @@ trait TransformableImage
 
         if ($this->width || $this->height) {
             $image->resize($this->width, $this->height);
+        }
+
+        if ($this->outputFormat) {
+            switch ($this->outputFormat) {
+                case 'jpg':
+                    $image->toJpg();
+                    break;
+                case 'png':
+                    $image->toPng();
+                    break;
+                case 'webp':
+                    $image->toWebp();
+                    break;
+                case 'bmp':
+                    $image->toBmp();
+                    break;
+                case 'gif':
+                    $image->toGif();
+                    break;
+                default:
+                    $image->toJpg();
+                    break;
+            }
         }
 
         $image->encode(new AutoEncoder())->save($uploadedFile->getPathName(), $this->quality);
