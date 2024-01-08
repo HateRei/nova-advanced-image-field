@@ -4,8 +4,6 @@ namespace Ohka7\NovaAdvancedImageField;
 
 use Illuminate\Http\UploadedFile;
 use Intervention\Image\ImageManager;
-use Intervention\Image\Encoders\AutoEncoder;
-use Intervention\Image\Image;
 
 trait TransformableImage
 {
@@ -43,13 +41,6 @@ trait TransformableImage
      * @var int
      */
     private $height;
-
-    /**
-     * Indicates if the image is orientable.
-     *
-     * @var bool
-     */
-    private $autoOrientate = false;
 
     /**
      * The quality of the resulting image.
@@ -130,26 +121,6 @@ trait TransformableImage
     }
 
     /**
-     * Specify if the underlying image should be orientated.
-     * Rotate the image to the orientation specified in Exif data, if any. Especially useful for smartphones.
-     * This method requires the exif extension to be enabled in your php settings.
-     *
-     * @throws \Exception
-     *
-     * @return $this
-     */
-    public function autoOrientate()
-    {
-        if (!extension_loaded('exif')) {
-            throw new \Exception('The PHP exif extension must be enabled to use the autoOrientate method.');
-        }
-
-        $this->autoOrientate = true;
-
-        return $this;
-    }
-
-    /**
      * Specify the resulting quality.
      * This only applies to JPG format since PNG compression is lossless.
      * The value must range from 0 (poor quality, small file) to 100 (best quality, big file).
@@ -220,28 +191,9 @@ trait TransformableImage
         }
 
         if ($this->outputFormat) {
-            switch ($this->outputFormat) {
-                case 'jpg':
-                    $image->toJpg();
-                    break;
-                case 'png':
-                    $image->toPng();
-                    break;
-                case 'webp':
-                    $image->toWebp();
-                    break;
-                case 'bmp':
-                    $image->toBmp();
-                    break;
-                case 'gif':
-                    $image->toGif();
-                    break;
-                default:
-                    $image->toJpg();
-                    break;
-            }
+            $image->encodeByExtension($this->outputFormat, $this->quality);
         }
 
-        $image->encode(new AutoEncoder())->save($uploadedFile->getPathName(), $this->quality);
+        $image->save($uploadedFile->getPathName(), $this->quality);
     }
 }
